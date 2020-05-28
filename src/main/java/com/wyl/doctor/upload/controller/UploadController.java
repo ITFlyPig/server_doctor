@@ -3,6 +3,7 @@ package com.wyl.doctor.upload.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
+import com.sun.tools.javac.jvm.Code;
 import com.wyl.doctor.bean.Codes;
 import com.wyl.doctor.bean.Response;
 import com.wyl.doctor.utils.Resp;
@@ -20,14 +21,14 @@ import java.io.IOException;
 
 @RestController
 @Slf4j
-@RequestMapping("/uplaod")
+@RequestMapping("/upload")
 public class UploadController {
     //配置文件的配置的
     @Value("${spring.servlet.multipart.location}")
     private String fileTempPath;
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Response save(@RequestParam("file")MultipartFile file) {
+    public Response save(@RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) {
             return Resp.create().code(Codes.SUCCESS).message("文件内容为空").done();
         }
@@ -43,4 +44,8 @@ public class UploadController {
         return Resp.create().code(Codes.SUCCESS).message("文件上传成功").done();
     }
 
+    @RequestMapping("/hello")
+    public Response hello() {
+        return Resp.create().code(Codes.SUCCESS).message("请求成功").done();
+    }
 }

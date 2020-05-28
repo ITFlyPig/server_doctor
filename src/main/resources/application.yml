@@ -7,6 +7,6 @@ spring:
     multipart:
       enabled: true
       location: /Users/yuelinwang/Documents/服务端/doctor/uploads
-      file-size-threshold: 5M
-      max-file-size: 20M
+      file-size-threshold: 5MB
+      max-file-size: 20MB
 
