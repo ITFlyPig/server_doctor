@@ -1,4 +1,12 @@
 server:
   port: 8080
   servlet:
-    context-path: /demo
+    context-path: /doctor
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      location: /Users/yuelinwang/Documents/服务端/doctor/uploads
+      file-size-threshold: 5M
+      max-file-size: 20M
+
