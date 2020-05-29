@@ -1,4 +1,4 @@
-package com.wyl.doctor.bean;
+package com.wyl.doctor.model;
 
 /**
  * 创建人   : yuelinwang

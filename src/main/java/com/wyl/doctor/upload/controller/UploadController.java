@@ -1,11 +1,9 @@
 package com.wyl.doctor.upload.controller;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import com.sun.tools.javac.jvm.Code;
-import com.wyl.doctor.bean.Codes;
-import com.wyl.doctor.bean.Response;
+import com.wyl.doctor.model.Codes;
+import com.wyl.doctor.model.Response;
 import com.wyl.doctor.utils.Resp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

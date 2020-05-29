@@ -1,6 +1,6 @@
 package com.wyl.doctor.utils;
 
-import com.wyl.doctor.bean.Response;
+import com.wyl.doctor.model.Response;
 
 /**
  * 创建人   : yuelinwang
