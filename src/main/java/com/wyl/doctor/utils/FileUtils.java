@@ -50,47 +50,6 @@ public class FileUtils {
         return buf;
     }
 
-    /**
-     * 将字节数组转为对象
-     *
-     * @param buf
-     * @param <T>
-     * @return
-     */
-    public static <T> T toObj(byte[] buf) {
-        if (buf == null) {
-            return null;
-        }
-        T t = null;
-        ByteArrayInputStream bais = new ByteArrayInputStream(buf);
-        ObjectInputStream ois = null;
-        try {
-            ois = new ObjectInputStream(bais);
-            Object obj = ois.readObject();
-            if (obj != null) {
-                t = (T) obj;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                bais.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (ois != null) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return t;
-    }
-
     public static boolean writeToFile(File targetFile, Serializable obj) {
         boolean result = false;
         if (targetFile == null) {
@@ -113,7 +72,7 @@ public class FileUtils {
         ByteBuffer buffer = ByteBuffer.allocate(4 + len);
         buffer.putInt(len);//写入长度
         buffer.put(buf);//写数据
-        byte[] bytes = FileUtils.int2Bytes(len);
+        byte[] bytes = BytesUtil.int2Bytes(len);
 
         //写入到文件
         FileOutputStream fos = null;
@@ -221,7 +180,7 @@ public class FileUtils {
             if (size >= 0) {
                 //表示一个完整的对象数据
                 if (size + pos <= len) {
-                    T t = FileUtils.<T>toObj(Arrays.copyOfRange(bytes, pos, pos + size));
+                    T t = BytesUtil.<T>toObj(Arrays.copyOfRange(bytes, pos, pos + size));
                     list.add(t);
                     //指针往后移动
                     pos += size;
@@ -249,7 +208,7 @@ public class FileUtils {
             throw new IllegalArgumentException("toInt 参数不是4字节");
         }
 
-        return bytes2Int(bytes);
+        return BytesUtil.bytes2Int(bytes);
     }
 
     public static int convertFourBytesToInt(byte b1, byte b2, byte b3, byte b4) {
@@ -260,23 +219,4 @@ public class FileUtils {
         return (long) (b4 & 0xFF) << 24 | (b3 & 0xFF) << 16 | (b2 & 0xFF) << 8 | (b1 & 0xFF);
     }
 
-    public static int bytes2Int(byte[] bytes) {
-        int result = 0;
-        //将每个byte依次搬运到int相应的位置
-        result = bytes[0] & 0xff;
-        result = result << 8 | bytes[1] & 0xff;
-        result = result << 8 | bytes[2] & 0xff;
-        result = result << 8 | bytes[3] & 0xff;
-        return result;
-    }
-
-    public static byte[] int2Bytes(int num) {
-        byte[] bytes = new byte[4];
-        //通过移位运算，截取低8位的方式，将int保存到byte数组
-        bytes[0] = (byte) (num >>> 24);
-        bytes[1] = (byte) (num >>> 16);
-        bytes[2] = (byte) (num >>> 8);
-        bytes[3] = (byte) num;
-        return bytes;
-    }
 }
