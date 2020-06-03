@@ -1,4 +1,4 @@
-package com.wyl.doctor.model;
+package com.wyl.doctor.unchanged;
 
 import java.io.Serializable;
 
@@ -8,6 +8,7 @@ import java.io.Serializable;
  * 描述     ：线程的信息
  */
 public class ThreadInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
     public String name;//线程的名称
     public long id;//线程id
 

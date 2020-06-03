@@ -1,11 +1,9 @@
 package com.wyl.doctor.upload.service.impl;
 
-import com.wyl.doctor.model.MethodCall;
+import com.wyl.doctor.unchanged.MethodBean;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 创建人   : yuelinwang
@@ -18,7 +16,7 @@ class ParseLogImplTest {
     void parse() {
         String path = "/Users/yuelinwang/Documents/服务端/doctor/uploads/test.log";
         ParseLogImpl parseLog = new ParseLogImpl();
-        ArrayList<MethodCall> list = parseLog.parse(path);
+        ArrayList<MethodBean> list = parseLog.parse(path);
         System.out.printf("llll");
     }
 }

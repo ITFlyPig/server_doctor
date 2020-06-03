@@ -1,5 +1,7 @@
 package com.wyl.doctor.model;
 
+import java.util.Arrays;
+
 /**
  * 创建人   : yuelinwang
  * 创建时间 : 2020/6/2
@@ -14,5 +16,14 @@ public class SocketRecvBean {
         this.type = type;
         this.len = len;
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "SocketRecvBean{" +
+                "type=" + type +
+                ", len=" + len +
+                ", data=" + Arrays.toString(data) +
+                '}';
     }
 }

@@ -1,12 +1,10 @@
 package com.wyl.doctor.utils;
 
-import com.wyl.doctor.model.MethodCall;
+import com.wyl.doctor.unchanged.MethodBean;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 创建人   : yuelinwang
@@ -18,7 +16,7 @@ class FileUtilsTest {
     @Test
     void writeToFile() {
         String path = "/Users/yuelinwang/Documents/服务端/doctor/uploads/test.log";
-        MethodCall call = new MethodCall();
+        MethodBean call = new MethodBean();
         call.name = "测试名称";
         File file = new File(path);
         if (!file.exists()) {

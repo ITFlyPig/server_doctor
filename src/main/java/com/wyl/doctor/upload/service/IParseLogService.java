@@ -1,9 +1,8 @@
 package com.wyl.doctor.upload.service;
 
-import com.wyl.doctor.model.MethodCall;
+import com.wyl.doctor.unchanged.MethodBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 创建人   : yuelinwang
@@ -16,5 +15,5 @@ public interface IParseLogService {
      * @param logPath
      * @return
      */
-    ArrayList<MethodCall> parse(String logPath);
+    ArrayList<MethodBean> parse(String logPath);
 }

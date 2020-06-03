@@ -1,6 +1,6 @@
 package com.wyl.doctor.upload.service.impl;
 
-import com.wyl.doctor.model.MethodCall;
+import com.wyl.doctor.unchanged.MethodBean;
 import com.wyl.doctor.upload.service.IParseLogService;
 import com.wyl.doctor.utils.FileUtils;
 import com.wyl.doctor.utils.TextUtils;
@@ -19,8 +19,8 @@ public class ParseLogImpl implements IParseLogService {
     public static final String TAG = ParseLogImpl.class.getName();
 
     @Override
-    public ArrayList<MethodCall> parse(String logPath) {
-        ArrayList<MethodCall> calls = null;
+    public ArrayList<MethodBean> parse(String logPath) {
+        ArrayList<MethodBean> calls = null;
         if (TextUtils.isEmpty(logPath)) {
             log.debug(TAG, "parse: log文件路径为空");
             return calls;

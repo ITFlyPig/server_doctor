@@ -6,6 +6,6 @@ package com.wyl.doctor.constants;
  * 描述    : 数据的类型
  */
 public interface DataType {
-    int ALL_PATH = 1;//所有路径的数据
+    int ALL_PATH = 5;//所有路径的数据
     int FPS = 2;//fps数据
 }

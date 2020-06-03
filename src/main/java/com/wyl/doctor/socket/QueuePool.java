@@ -1,6 +1,6 @@
 package com.wyl.doctor.socket;
 
-import com.wyl.doctor.model.MethodCall;
+import com.wyl.doctor.unchanged.MethodBean;
 import com.wyl.doctor.model.SocketRecvBean;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -12,5 +12,5 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class QueuePool {
     public static LinkedBlockingQueue<SocketRecvBean> recvQueue = new LinkedBlockingQueue<>();//存放socket接受到的字节数据
-    public static LinkedBlockingQueue<MethodCall> callQueue = new LinkedBlockingQueue<>();//存放字节解析为对象后的数据
+    public static LinkedBlockingQueue<MethodBean> callQueue = new LinkedBlockingQueue<>();//存放字节解析为对象后的数据
 }
