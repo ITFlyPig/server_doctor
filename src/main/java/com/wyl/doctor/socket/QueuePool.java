@@ -1,7 +1,7 @@
 package com.wyl.doctor.socket;
 
-import com.wyl.doctor.unchanged.MethodBean;
 import com.wyl.doctor.model.SocketRecvBean;
+import com.wyl.doctor.unchanged.MethodBean;
 
 import java.util.concurrent.LinkedBlockingQueue;
 

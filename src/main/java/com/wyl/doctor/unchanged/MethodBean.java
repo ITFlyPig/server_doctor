@@ -12,7 +12,6 @@ import java.util.List;
  */
 public class MethodBean extends BaseLogBean implements Serializable {
     private static final long serialVersionUID = 1L;
-
     public String methodName;//方法名字
     public Object[] args;//方法的参数
     public String classFullName;//所属的类：全类名

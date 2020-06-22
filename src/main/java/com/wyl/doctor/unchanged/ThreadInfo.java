@@ -16,12 +16,4 @@ public class ThreadInfo implements Serializable {
         this.name = name;
         this.id = id;
     }
-
-    @Override
-    public String toString() {
-        return "ThreadInfo{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                '}';
-    }
 }

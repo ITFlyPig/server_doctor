@@ -16,8 +16,9 @@ import java.net.Socket;
 
 @Slf4j
 public class SocketRunnable implements Runnable {
-    private volatile boolean isStop;
+    public volatile boolean isStop;
     private Socket socket;
+    private static final int MAX_SIZE = 1024 * 1024;
 
     public SocketRunnable(Socket socket) {
         this.socket = socket;
@@ -67,6 +68,7 @@ public class SocketRunnable implements Runnable {
                 }
 
                 byte[] datas = new byte[dataSize];
+
                 ret = is.read(datas);
                 if (ret == -1) {
                     isStop = true;

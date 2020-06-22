@@ -1,42 +1,58 @@
 package com.wyl.doctor.socket.websocket;
 
+import com.wyl.doctor.model.WebSocketConnect;
+import com.wyl.doctor.utils.TextUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @ServerEndpoint(value = "/websocket/{sid}")
 @Component
 @Slf4j
 public class WebSocketServer {
-    //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-    private static List<WebSocketServer> webSocketList = Collections.synchronizedList(new ArrayList<WebSocketServer>());
-    //与某个客户端的连接会话，需要通过它来给客户端发送数据
-    private Session session;
-    //接收sid
-    private String sid = "";
-
-    //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
-    private static int onlineCount = 0;
 
     private static final String PREFIX = "flutter_draw";//需要数据的sid的前缀
 
+    private static WebSocketConnect webSocketConnect;
+    
     @OnOpen
     public void onOpen(Session session, @PathParam("sid") String sid) {
-        this.session = session;
-        this.sid = sid;
         session.setMaxIdleTimeout(10000 * 60);
-        webSocketList.add(this);     //加入set中
-        addOnlineCount();           //在线数加1
-        log.info("有新窗口开始监听:" + sid + ",当前在线人数为" + getOnlineCount());
+        if (sid != null && sid.startsWith(PREFIX)) {
+            setNewConnect(new WebSocketConnect(session, sid));
+        }
+        log.info("有新的WebSocket接入:" + sid );
+        
+    }
+
+
+    /**
+     * 设置一个新的WebSocket连接
+     * @param newWebSocketConnect
+     */
+    private synchronized void setNewConnect(WebSocketConnect newWebSocketConnect) {
+      if (newWebSocketConnect == null) return;
+      //关闭之前的连接
+        closeConnect(WebSocketServer.webSocketConnect);
+        WebSocketServer.webSocketConnect = newWebSocketConnect;
+    }
+
+    /**
+     * 关闭连接
+     * @param connect
+     */
+    private void closeConnect(WebSocketConnect connect) {
+        if  (connect == null || connect.getSession() == null) return;
+        try {
+            connect.getSession().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -44,9 +60,8 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-        webSocketList.remove(this);  //从set中删除
-        subOnlineCount();           //在线数减1
-        log.info("有一连接关闭！当前在线人数为" + getOnlineCount());
+        closeConnect(WebSocketServer.webSocketConnect);
+        log.info("有一连接关闭");
     }
 
     /**
@@ -57,7 +72,12 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        log.info("收到来自窗口" + sid + "的信息:" + message);
+        log.info("收到信息:" + message);
+    }
+
+    @OnMessage
+    public void onMessage(byte[] data, Session session) {
+        log.info("onMessage 收到的byte数据");
     }
 
 
@@ -73,46 +93,30 @@ public class WebSocketServer {
         error.printStackTrace();
     }
 
-    public String getSid() {
-        return sid;
-    }
-
     /**
-     * 实现服务器主动推送
+     * 主动下发消息
+     * @param message
+     * @param connect
      */
-    public void sendMessage(String message) throws IOException {
-        this.session.getBasicRemote().sendText(message);
-    }
-
-    public static synchronized int getOnlineCount() {
-        return onlineCount;
-    }
-
-    public static synchronized void addOnlineCount() {
-        onlineCount++;
-    }
-
-    public static synchronized void subOnlineCount() {
-        onlineCount--;
-    }
-
-    /**
-     * 将数据写到客户端
-     * @param msg
-     */
-    public static void write(String msg) {
+    public static void sendMessage(String message, WebSocketConnect connect) {
+        log.debug("sendMessage: ");
+        if (TextUtils.isEmpty(message) || connect == null || connect.getSession() == null) return;
         try {
-            for (WebSocketServer webSocketServer : webSocketList) {
-                //找到需要写的连接，然后写数据
-                if (webSocketServer.getSid().contains(PREFIX)) {
-                    webSocketServer.sendMessage(msg);
-                }
-            }
+            connect.getSession().getBasicRemote().sendText(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+    
+    
 
-
+    /**
+     * 将数据写到客户端
+     *
+     * @param msg
+     */
+    public static void write(String msg) {
+        log.debug("write: 开始往客户端写数据：" + (msg == null ? "" : msg));
+       sendMessage(msg, WebSocketServer.webSocketConnect);
+    }
 }

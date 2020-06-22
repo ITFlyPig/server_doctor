@@ -3,8 +3,8 @@ package com.wyl.doctor.socket;
 import com.alibaba.fastjson.JSON;
 import com.wyl.doctor.constants.DataType;
 import com.wyl.doctor.socket.websocket.WebSocketServer;
-import com.wyl.doctor.unchanged.MethodBean;
 import com.wyl.doctor.model.SocketRecvBean;
+import com.wyl.doctor.unchanged.MethodBean;
 import com.wyl.doctor.utils.BytesUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class HandleSocketMsgTask implements Runnable {
-    private volatile boolean isStop;
+    public static volatile boolean isStop;
 
     @Override
     public void run() {
@@ -31,7 +31,6 @@ public class HandleSocketMsgTask implements Runnable {
                 e.printStackTrace();
             }
         }
-
     }
 
     /**
