@@ -1,6 +1,8 @@
 package com.wyl.doctor.socket.websocket;
 
+import com.wyl.doctor.model.SocketRecvBean;
 import com.wyl.doctor.model.WebSocketConnect;
+import com.wyl.doctor.socket.QueuePool;
 import com.wyl.doctor.utils.TextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -60,7 +62,7 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-        closeConnect(WebSocketServer.webSocketConnect);
+//        closeConnect(WebSocketServer.webSocketConnect);
         log.info("有一连接关闭");
     }
 
@@ -77,7 +79,12 @@ public class WebSocketServer {
 
     @OnMessage
     public void onMessage(byte[] data, Session session) {
-        log.info("onMessage 收到的byte数据");
+        log.info("onMessage 收到的byte数据，放入待解析队列");
+        if (data != null) {
+            //将获取到的数据添加到待处理队列
+            QueuePool.recvQueue.offer(new SocketRecvBean(5, data.length, data));
+        }
+
     }
 
 
@@ -100,7 +107,7 @@ public class WebSocketServer {
      */
     public static void sendMessage(String message, WebSocketConnect connect) {
         log.debug("sendMessage: ");
-        if (TextUtils.isEmpty(message) || connect == null || connect.getSession() == null) return;
+        if (TextUtils.isEmpty(message) || connect == null || connect.getSession() == null || !connect.getSession().isOpen()) return;
         try {
             connect.getSession().getBasicRemote().sendText(message);
         } catch (IOException e) {

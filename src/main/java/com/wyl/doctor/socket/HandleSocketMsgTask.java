@@ -43,11 +43,13 @@ public class HandleSocketMsgTask implements Runnable {
         switch (bean.type) {
             case DataType.ALL_PATH:
                 MethodBean call = BytesUtil.<MethodBean>toObj(bean.data);
+                if (call == null) return;
                 log.debug("parse: 解析得到数据：" + (call == null ? "null" : call.toString()));
 //                if (call != null) {
 //                    QueuePool.callQueue.offer(call);
 //                }
                 //将解析得到的数据直接写到客户端
+                log.debug("解析得到的时间：" + (call.endTime - call.startTime));
                 WebSocketServer.write(JSON.toJSONString(call));
                 break;
         }
